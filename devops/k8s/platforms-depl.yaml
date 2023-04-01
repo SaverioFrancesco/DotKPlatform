@@ -1,0 +1,16 @@
+apiVersion: app/v1
+kind: Deployment
+metadata:
+  name: platforms-deployment
+spec:
+  replicas: 1
+  selector:
+    app: platformservice
+  template:
+    metadata:
+      labels:
+        app: platformservice
+      spec:
+        containers:
+        - name: platformservice
+          image: comissofrancesco/platformservice:latest
