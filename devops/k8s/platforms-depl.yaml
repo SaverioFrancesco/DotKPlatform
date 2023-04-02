@@ -1,16 +1,33 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: platforms-deployment
-spec:
-  replicas: 1
-  selector:
+  annotations:
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2023-04-01T19:24:33Z"
+  generation: 1
+  labels:
     app: platformservice
+  name: platformservice
+  namespace: local1
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: platformservice
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
+      creationTimestamp: null
       labels:
         app: platformservice
-      spec:
-        containers:
-        - name: platformservice
-          image: comissofrancesco/platformservice:latest
+    spec:
+      containers:
+      - image: comissofrancesco/platformservice:latest
+        imagePullPolicy: Always
+        name: platformservice
